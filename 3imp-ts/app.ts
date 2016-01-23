@@ -16,6 +16,10 @@ function cdr<TCar, TCdr>(cell: Cell<TCar, TCdr>) {
     return cell.cdr;
 }
 
+function cons<TCar, TCdr>(car: TCar, cdr: TCdr) {
+    return new Cell(car, cdr);
+}
+
 window.onload = () => {
     var el = window.document.getElementById('content');
     var cell = cons(1, cons(cons("hoge", 10), 3));
