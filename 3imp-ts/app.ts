@@ -66,7 +66,57 @@ class Parser {
             .split(/\s+/);
     }
 
-    public parseAtom(token: string) {
+    protected unparsed: Array<string>;
+
+    public parse(input: string) {
+        this.unparsed = this.tokenize(input);
+        return this.parseSentence();
+    }
+
+    public parseSentence() {
+        var token = this.unparsed.shift();
+
+        if (token == '(') {
+            return this.parseApplication();
+        } else {
+            return this.parseObject();
+        }
+    }
+
+    public parseApplication() {
+        return cons(this.parseOperator(), this.parseOperands());
+    }
+
+    public parseOperator() {
+        var token = this.unparsed.shift();
+
+        if (token == '(') {
+            return this.parseApplication();
+        } else {
+            this.unparsed.unshift(token);
+            return this.parseObject();
+        }
+    }
+
+    public parseOperands() {
+        var token = this.unparsed.shift();
+
+        if (token == '(') {
+            return cons(this.parseApplication(), this.parseOperands());
+        } else if (token == ')') {
+            return null;
+        } else {
+            this.unparsed.unshift(token);
+            return cons(this.parseObject(), this.parseOperands());
+        }
+    }
+
+    public parseObject() {
+        return this.parseAtom(); // TODO: Support quote, dot
+    }
+
+    public parseAtom() {
+        var token = this.unparsed.shift();
         return  parseFloat(token) || Symbol.Generate(token);
     }
 }
@@ -98,7 +148,5 @@ window.onload = () => {
     el.innerHTML += "<br />";
     el.innerHTML += tokens;
 
-    el.innerHTML += parser.parseAtom("1");
-    el.innerHTML += parser.parseAtom("1.99");
-    el.innerHTML += parser.parseAtom("cons");
+    var parsed = parser.parse("(+ (+ 1 2) 3)");
 };
