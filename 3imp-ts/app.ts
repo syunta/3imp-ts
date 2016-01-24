@@ -48,7 +48,7 @@ class Dictionary<T> {
 class Symbol {
     protected static table: Dictionary<Symbol> = new Dictionary<Symbol>();
 
-    public static Generate(key: string): Symbol {
+    public static Intern(key: string): Symbol {
         if (!Symbol.table[key]) {
             Symbol.table[key] = new Symbol();
         }
@@ -117,7 +117,7 @@ class Parser {
 
     public parseAtom() {
         var token = this.unparsed.shift();
-        return  parseFloat(token) || Symbol.Generate(token);
+        return  parseFloat(token) || Symbol.Intern(token);
     }
 }
 
@@ -135,11 +135,11 @@ window.onload = () => {
     el.innerHTML += cddr(lst).car;
     el.innerHTML += cddr(lst).cdr;
 
-    var s1 = Symbol.Generate('hoge');
+    var s1 = Symbol.Intern('hoge');
     el.innerHTML += s1 instanceof Symbol;
     el.innerHTML += s1 instanceof Cell;
-    var s2 = Symbol.Generate('hoge');
-    var s3 = Symbol.Generate('foo');
+    var s2 = Symbol.Intern('hoge');
+    var s3 = Symbol.Intern('foo');
     el.innerHTML += s1 == s2;
     el.innerHTML += s1 == s3;
 
