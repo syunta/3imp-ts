@@ -1,4 +1,7 @@
-﻿class Cell<TCar, TCdr> {
+﻿/// <reference path = "Scripts/linq" />
+import IEnumerable = linqjs.IEnumerable;
+
+class Cell<TCar, TCdr> {
     public car: TCar;
     public cdr: TCdr;
 
