@@ -57,6 +57,13 @@ class Symbol {
 }
 
 class Parser {
+    protected unparsed: Array<string>;
+
+    public parse(input: string) {
+        this.unparsed = this.tokenize(input);
+        return this.parseSentence();
+    }
+
     public tokenize(input: string): Array<string> {
         return input
             .replace(/\(/g, " ( ")
@@ -64,13 +71,6 @@ class Parser {
             .replace(/^\s+/, "")
             .replace(/\s+$/, "")
             .split(/\s+/);
-    }
-
-    protected unparsed: Array<string>;
-
-    public parse(input: string) {
-        this.unparsed = this.tokenize(input);
-        return this.parseSentence();
     }
 
     public parseSentence() {
