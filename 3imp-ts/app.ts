@@ -36,7 +36,9 @@ function list<T1, T2>(e1: T1, e2: T2): Cell<T1, Cell<T2, void>>;
 function list<T1, T2, T3>(e1: T1, e2: T2, e3: T3): Cell<T1, Cell<T2, Cell<T3, void>>>;
 function list<T1, T2, T3, T4>(e1: T1, e2: T2, e3: T3, e4: T4): Cell<T1, Cell<T2, Cell<T3, Cell<T4, void>>>>;
 function list(...args: any[]) {
-    return args.reverse().reduce((prev, current) => cons(current, prev), null);
+    return args
+        .reverse()
+        .reduce((prev, current) => cons(current, prev), null);
 }
 
 class Dictionary<T> {
