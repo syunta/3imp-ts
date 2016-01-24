@@ -39,7 +39,20 @@ function list(...args: any[]) {
     return args.reverse().reduce((prev, current) => cons(current, prev), null);
 }
 
-class Symbol extends String { }
+class Dictionary<T> {
+    [index: string]: T;
+}
+
+class Symbol {
+    protected static table: Dictionary<Symbol> = new Dictionary<Symbol>();
+
+    public static Generate(key: string): Symbol {
+        if (!Symbol.table[key]) {
+            Symbol.table[key] = new Symbol();
+        }
+        return Symbol.table[key];
+    }
+}
 
 window.onload = () => {
     var el = window.document.getElementById('content');
@@ -55,7 +68,11 @@ window.onload = () => {
     el.innerHTML += cddr(lst).car;
     el.innerHTML += cddr(lst).cdr;
 
-    var s = new Symbol();
-    el.innerHTML += s instanceof Symbol;
-    el.innerHTML += s instanceof Cell;
+    var s1 = Symbol.Generate('hoge');
+    el.innerHTML += s1 instanceof Symbol;
+    el.innerHTML += s1 instanceof Cell;
+    var s2 = Symbol.Generate('hoge');
+    var s3 = Symbol.Generate('foo');
+    el.innerHTML += s1 == s2;
+    el.innerHTML += s1 == s3;
 };
