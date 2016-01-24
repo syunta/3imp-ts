@@ -54,6 +54,17 @@ class Symbol {
     }
 }
 
+class Parser {
+    public tokenize(input: string): Array<string> {
+        return input
+            .replace(/\(/g, " ( ")
+            .replace(/\)/g, " ) ")
+            .replace(/^\s+/, "")
+            .replace(/\s+$/, "")
+            .split(/\s+/);
+    }
+}
+
 window.onload = () => {
     var el = window.document.getElementById('content');
     var cell = cons(1, cons(cons("hoge", 10), 3));
@@ -75,4 +86,8 @@ window.onload = () => {
     var s3 = Symbol.Generate('foo');
     el.innerHTML += s1 == s2;
     el.innerHTML += s1 == s3;
+
+    var parser = new Parser();
+    el.innerHTML += "<br />";
+    el.innerHTML += parser.tokenize("  (cons 1 (cons 2 (cons 3 '())))");
 };
