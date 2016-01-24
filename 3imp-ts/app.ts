@@ -11,23 +11,23 @@ class Cell<TCar, TCdr> {
     }
 }
 
-function car<TCar, TCdr>(cell: Cell<TCar, TCdr>) {
+function car<TCar, TCdr>(cell: Cell<TCar, TCdr>): TCar {
     return cell.car;
 }
 
-function cdr<TCar, TCdr>(cell: Cell<TCar, TCdr>) {
+function cdr<TCar, TCdr>(cell: Cell<TCar, TCdr>): TCdr {
     return cell.cdr;
 }
 
-function cons<TCar, TCdr>(car: TCar, cdr: TCdr) {
+function cons<TCar, TCdr>(car: TCar, cdr: TCdr): Cell<TCar, TCdr> {
     return new Cell(car, cdr);
 }
 
-function cadr<TCar1, TCar2, TCdr>(cell: Cell<TCar1, Cell<TCar2, TCdr>>) {
+function cadr<TCar1, TCar2, TCdr>(cell: Cell<TCar1, Cell<TCar2, TCdr>>): TCar2 {
     return car(cdr(cell));
 }
 
-function cddr<TCar1, TCar2, TCdr>(cell: Cell<TCar1, Cell<TCar2, TCdr>>) {
+function cddr<TCar1, TCar2, TCdr>(cell: Cell<TCar1, Cell<TCar2, TCdr>>): TCdr {
     return cdr(cdr(cell));
 }
 
