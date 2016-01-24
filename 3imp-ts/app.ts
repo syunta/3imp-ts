@@ -36,6 +36,8 @@ function list(...args: any[]) {
     return args.reverse().reduce((prev, current) => cons(current, prev), null);
 }
 
+class Symbol extends String { }
+
 window.onload = () => {
     var el = window.document.getElementById('content');
     var cell = cons(1, cons(cons("hoge", 10), 3));
@@ -49,4 +51,8 @@ window.onload = () => {
     el.innerHTML += cadr(lst);
     el.innerHTML += cddr(lst).car;
     el.innerHTML += cddr(lst).cdr;
+
+    var s = new Symbol();
+    el.innerHTML += s instanceof Symbol;
+    el.innerHTML += s instanceof Cell;
 };
