@@ -65,6 +65,10 @@ class Parser {
             .replace(/\s+$/, "")
             .split(/\s+/);
     }
+
+    public parseAtom(token: string) {
+        return  parseFloat(token) || Symbol.Generate(token);
+    }
 }
 
 window.onload = () => {
@@ -90,6 +94,11 @@ window.onload = () => {
     el.innerHTML += s1 == s3;
 
     var parser = new Parser();
+    var tokens = parser.tokenize("  (cons 1 (cons 2 (cons 3 '())))");
     el.innerHTML += "<br />";
-    el.innerHTML += parser.tokenize("  (cons 1 (cons 2 (cons 3 '())))");
+    el.innerHTML += tokens;
+
+    el.innerHTML += parser.parseAtom("1");
+    el.innerHTML += parser.parseAtom("1.99");
+    el.innerHTML += parser.parseAtom("cons");
 };
