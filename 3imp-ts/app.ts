@@ -55,7 +55,7 @@ class Symbol {
 class Parser {
     protected unparsed: Array<string>;
 
-    public parse(input: string) {
+    public parse(input: string): any {
         this.unparsed = this.tokenize(input);
         return this.parseSentence();
     }
@@ -69,7 +69,7 @@ class Parser {
             .split(/\s+/);
     }
 
-    public parseSentence() {
+    public parseSentence(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
