@@ -44,9 +44,15 @@ class Dictionary<T> {
 class Symbol {
     protected static table: Dictionary<Symbol> = new Dictionary<Symbol>();
 
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    public name: string;
+
     public static Intern(key: string): Symbol {
         if (!Symbol.table[key]) {
-            Symbol.table[key] = new Symbol();
+            Symbol.table[key] = new Symbol(key);
         }
         return Symbol.table[key];
     }
