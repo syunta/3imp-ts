@@ -1,40 +1,36 @@
 ﻿/// <reference path = "Scripts/linq" />
 import IEnumerable = linqjs.IEnumerable;
 
-class Cell<TCar, TCdr> {
-    public car: TCar;
-    public cdr: TCdr;
+class Cell {
+    public car: any;
+    public cdr: any;
 
-    constructor(car: TCar, cdr: TCdr) {
+    constructor(car: any, cdr: any) {
         this.car = car;
         this.cdr = cdr;
     }
 }
 
-function car<TCar, TCdr>(cell: Cell<TCar, TCdr>): TCar {
+function car(cell: Cell): any {
     return cell.car;
 }
 
-function cdr<TCar, TCdr>(cell: Cell<TCar, TCdr>): TCdr {
+function cdr(cell: Cell): any {
     return cell.cdr;
 }
 
-function cons<TCar, TCdr>(car: TCar, cdr: TCdr): Cell<TCar, TCdr> {
+function cons(car: any, cdr: any): Cell {
     return new Cell(car, cdr);
 }
 
-function cadr<TCar1, TCar2, TCdr>(cell: Cell<TCar1, Cell<TCar2, TCdr>>): TCar2 {
+function cadr(cell: Cell): any {
     return car(cdr(cell));
 }
 
-function cddr<TCar1, TCar2, TCdr>(cell: Cell<TCar1, Cell<TCar2, TCdr>>): TCdr {
+function cddr(cell: Cell): any {
     return cdr(cdr(cell));
 }
 
-function list<T>(e: T): Cell<T, void>;
-function list<T1, T2>(e1: T1, e2: T2): Cell<T1, Cell<T2, void>>;
-function list<T1, T2, T3>(e1: T1, e2: T2, e3: T3): Cell<T1, Cell<T2, Cell<T3, void>>>;
-function list<T1, T2, T3, T4>(e1: T1, e2: T2, e3: T3, e4: T4): Cell<T1, Cell<T2, Cell<T3, Cell<T4, void>>>>;
 function list(...args: any[]) {
     return args
         .reverse()
