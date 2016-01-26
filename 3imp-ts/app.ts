@@ -70,6 +70,7 @@ class Parser {
         return input
             .replace(/\(/g, " ( ")
             .replace(/\)/g, " ) ")
+            .replace(/'/g, "' ")
             .replace(/^\s+/, "")
             .replace(/\s+$/, "")
             .split(/\s+/);
@@ -80,6 +81,8 @@ class Parser {
 
         if (token == '(') {
             return this.parseApplication();
+        } else if (token == "'") {
+            return this.parseQuote();
         } else {
             return this.parseObject(token);
         }
@@ -94,6 +97,8 @@ class Parser {
 
         if (token == '(') {
             return this.parseApplication();
+        } else if (token == "'") {
+            return this.parseQuote();
         } else {
             return this.parseObject(token);
         }
@@ -106,17 +111,29 @@ class Parser {
             return cons(this.parseApplication(), this.parseOperands());
         } else if (token == ')') {
             return null;
+        } else if (token == "'") {
+            return cons(this.parseQuote(), this.parseOperands());
         } else {
             return cons(this.parseObject(token), this.parseOperands());
         }
     }
 
     public parseObject(token): any {
-        return this.parseAtom(token); // TODO: Support quote, dot
+        return this.parseAtom(token); // TODO: Support dot, application
     }
 
     public parseAtom(token): any {
-        return  parseFloat(token) || Symbol.Intern(token);
+        return parseFloat(token) || Symbol.Intern(token);
+    }
+
+    public parseQuote(): any {
+        var token = this.unparsed.shift();
+
+        if (token == '(') {
+            return list(Symbol.Intern("quote"), this.parseApplication());
+        } else {
+            return list(Symbol.Intern("quote"), this.parseObject(token));
+        }
     }
 }
 
@@ -149,4 +166,9 @@ window.onload = () => {
 
     var parsed = parser.parse("(+ (+ 1 2) 3)");
     var parsed2 = parser.parse("1");
+    var parsed3 = parser.parse("'+"); // (quote +)
+    var parsed4 = parser.parse("'(+ + +)"); // (quote (+ + +))
+    var parsed5 = parser.parse("(proc '(+) *)"); // (proc (quote (+)) *)
+    var parsed6 = parser.parse("('proc + *)"); // ((quote proc) + *)
+    var parsed7 = parser.parse("('(proc) + *)"); // ((quote (proc)) + *)
 };
