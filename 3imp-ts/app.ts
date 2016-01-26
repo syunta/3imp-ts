@@ -75,26 +75,25 @@ class Parser {
         if (token == '(') {
             return this.parseApplication();
         } else {
-            return this.parseObject();
+            return this.parseObject(token);
         }
     }
 
-    public parseApplication() {
+    public parseApplication(): any {
         return cons(this.parseOperator(), this.parseOperands());
     }
 
-    public parseOperator() {
+    public parseOperator(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
             return this.parseApplication();
         } else {
-            this.unparsed.unshift(token);
-            return this.parseObject();
+            return this.parseObject(token);
         }
     }
 
-    public parseOperands() {
+    public parseOperands(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
@@ -102,17 +101,15 @@ class Parser {
         } else if (token == ')') {
             return null;
         } else {
-            this.unparsed.unshift(token);
-            return cons(this.parseObject(), this.parseOperands());
+            return cons(this.parseObject(token), this.parseOperands());
         }
     }
 
-    public parseObject() {
-        return this.parseAtom(); // TODO: Support quote, dot
+    public parseObject(token): any {
+        return this.parseAtom(token); // TODO: Support quote, dot
     }
 
-    public parseAtom() {
-        var token = this.unparsed.shift();
+    public parseAtom(token): any {
         return  parseFloat(token) || Symbol.Intern(token);
     }
 }
@@ -145,4 +142,5 @@ window.onload = () => {
     el.innerHTML += tokens;
 
     var parsed = parser.parse("(+ (+ 1 2) 3)");
+    var parsed2 = parser.parse("1");
 };
