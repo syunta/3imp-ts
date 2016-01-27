@@ -80,7 +80,7 @@ class Parser {
         var token = this.unparsed.shift();
 
         if (token == '(') {
-            return this.parseApplication();
+            return this.parsePair();
         } else if (token == "'") {
             return this.parseQuote();
         } else {
@@ -88,7 +88,7 @@ class Parser {
         }
     }
 
-    protected parseApplication(): any {
+    protected parsePair(): any {
         return cons(this.parseFirst(), this.parseRest());
     }
 
@@ -96,7 +96,7 @@ class Parser {
         var token = this.unparsed.shift();
 
         if (token == '(') {
-            return cons(this.parseApplication(), this.parseRest());
+            return cons(this.parsePair(), this.parseRest());
         } else if (token == ')') {
             return null;
         } else if (token == "'") {
@@ -107,7 +107,7 @@ class Parser {
     }
 
     protected parseObject(token): any {
-        return this.parseAtom(token); // TODO: Support dot, application
+        return this.parseAtom(token); // TODO: Support dot, #t, #f
     }
 
     protected parseAtom(token): any {
@@ -118,7 +118,7 @@ class Parser {
         var token = this.unparsed.shift();
 
         if (token == '(') {
-            return list(Symbol.Intern("quote"), this.parseApplication());
+            return list(Symbol.Intern("quote"), this.parsePair());
         } else {
             return list(Symbol.Intern("quote"), this.parseObject(token));
         }
