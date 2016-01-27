@@ -89,19 +89,7 @@ class Parser {
     }
 
     protected parseApplication(): any {
-        return cons(this.parseOperator(), this.parseOperands());
-    }
-
-    protected parseOperator(): any {
-        var token = this.unparsed.shift();
-
-        if (token == '(') {
-            return this.parseApplication();
-        } else if (token == "'") {
-            return this.parseQuote();
-        } else {
-            return this.parseObject(token);
-        }
+        return cons(this.parseFirst(), this.parseOperands());
     }
 
     protected parseOperands(): any {
