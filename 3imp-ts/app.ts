@@ -89,20 +89,20 @@ class Parser {
     }
 
     protected parseApplication(): any {
-        return cons(this.parseFirst(), this.parseOperands());
+        return cons(this.parseFirst(), this.parseRest());
     }
 
-    protected parseOperands(): any {
+    protected parseRest(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
-            return cons(this.parseApplication(), this.parseOperands());
+            return cons(this.parseApplication(), this.parseRest());
         } else if (token == ')') {
             return null;
         } else if (token == "'") {
-            return cons(this.parseQuote(), this.parseOperands());
+            return cons(this.parseQuote(), this.parseRest());
         } else {
-            return cons(this.parseObject(token), this.parseOperands());
+            return cons(this.parseObject(token), this.parseRest());
         }
     }
 
