@@ -84,7 +84,7 @@ class Parser {
         } else if (token == "'") {
             return this.parseQuote();
         } else {
-            return this.parseObject(token);
+            return this.parseAtom(token);
         }
     }
 
@@ -102,12 +102,8 @@ class Parser {
         } else if (token == "'") {
             return cons(this.parseQuote(), this.parseRest());
         } else {
-            return cons(this.parseObject(token), this.parseRest());
+            return cons(this.parseAtom(token), this.parseRest());
         }
-    }
-
-    protected parseObject(token): any {
-        return this.parseAtom(token); // TODO: Support dot, #t, #f
     }
 
     protected parseAtom(token): any {
@@ -120,7 +116,7 @@ class Parser {
         if (token == '(') {
             return list(Symbol.Intern("quote"), this.parsePair());
         } else {
-            return list(Symbol.Intern("quote"), this.parseObject(token));
+            return list(Symbol.Intern("quote"), this.parseAtom(token));
         }
     }
 }
