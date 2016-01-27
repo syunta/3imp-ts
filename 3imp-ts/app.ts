@@ -63,7 +63,7 @@ class Parser {
 
     public parse(input: string): any {
         this.unparsed = this.tokenize(input);
-        return this.parseSentence();
+        return this.parseFirst();
     }
 
     public tokenize(input: string): Array<string> {
@@ -76,7 +76,7 @@ class Parser {
             .split(/\s+/);
     }
 
-    protected parseSentence(): any {
+    protected parseFirst(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
