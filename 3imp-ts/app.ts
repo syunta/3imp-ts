@@ -66,7 +66,7 @@ class Parser {
         return this.parseFirst();
     }
 
-    public tokenize(input: string): Array<string> {
+    public tokenize(input: string): Array<string> { //TODO: not use regex
         return input
             .replace(/\(/g, " ( ")
             .replace(/\)/g, " ) ")
@@ -78,7 +78,6 @@ class Parser {
 
     protected parseFirst(): any {
         var token = this.unparsed.shift();
-
         if (token == '(') {
             return this.parsePair();
         } else if (token == "'") {
@@ -94,7 +93,6 @@ class Parser {
 
     protected parseRest(): any {
         var token = this.unparsed.shift();
-
         if (token == '(') {
             return cons(this.parsePair(), this.parseRest());
         } else if (token == ')') {
@@ -107,12 +105,12 @@ class Parser {
     }
 
     protected parseAtom(token): any {
-        return parseFloat(token) || Symbol.Intern(token);
+        if (token == "#f") { return false; }
+        return parseFloat(token) || token == "#t" || Symbol.Intern(token);
     }
 
     protected parseQuote(): any {
         var token = this.unparsed.shift();
-
         if (token == '(') {
             return list(Symbol.Intern("quote"), this.parsePair());
         } else {
@@ -155,4 +153,5 @@ window.onload = () => {
     var parsed5 = parser.parse("(proc '(+) *)"); // (proc (quote (+)) *)
     var parsed6 = parser.parse("('proc + *)"); // ((quote proc) + *)
     var parsed7 = parser.parse("('(proc) + *)"); // ((quote (proc)) + *)
+    var parsed7 = parser.parse("(#t #f)"); // (true false)
 };
