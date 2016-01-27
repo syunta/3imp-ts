@@ -76,7 +76,7 @@ class Parser {
             .split(/\s+/);
     }
 
-    public parseSentence(): any {
+    protected parseSentence(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
@@ -88,11 +88,11 @@ class Parser {
         }
     }
 
-    public parseApplication(): any {
+    protected parseApplication(): any {
         return cons(this.parseOperator(), this.parseOperands());
     }
 
-    public parseOperator(): any {
+    protected parseOperator(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
@@ -104,7 +104,7 @@ class Parser {
         }
     }
 
-    public parseOperands(): any {
+    protected parseOperands(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
@@ -118,15 +118,15 @@ class Parser {
         }
     }
 
-    public parseObject(token): any {
+    protected parseObject(token): any {
         return this.parseAtom(token); // TODO: Support dot, application
     }
 
-    public parseAtom(token): any {
+    protected parseAtom(token): any {
         return parseFloat(token) || Symbol.Intern(token);
     }
 
-    public parseQuote(): any {
+    protected parseQuote(): any {
         var token = this.unparsed.shift();
 
         if (token == '(') {
