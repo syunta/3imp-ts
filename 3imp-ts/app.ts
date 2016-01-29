@@ -79,7 +79,7 @@ class Parser {
     protected parseFirst(): any {
         var token = this.unparsed.shift();
         if (token == '(') {
-            return this.parsePair();
+            return this.parseList();
         } else if (token == "'") {
             return this.parseQuote();
         } else {
@@ -87,14 +87,14 @@ class Parser {
         }
     }
 
-    protected parsePair(): any {
+    protected parseList(): any {
         return cons(this.parseFirst(), this.parseRest());
     }
 
     protected parseRest(): any {
         var token = this.unparsed.shift();
         if (token == '(') {
-            return cons(this.parsePair(), this.parseRest());
+            return cons(this.parseList(), this.parseRest());
         } else if (token == ')') {
             return null;
         } else if (token == "'") {
@@ -112,7 +112,7 @@ class Parser {
     protected parseQuote(): any {
         var token = this.unparsed.shift();
         if (token == '(') {
-            return list(Symbol.Intern("quote"), this.parsePair());
+            return list(Symbol.Intern("quote"), this.parseList());
         } else {
             return list(Symbol.Intern("quote"), this.parseAtom(token));
         }
@@ -153,5 +153,5 @@ window.onload = () => {
     var parsed5 = parser.parse("(proc '(+) *)"); // (proc (quote (+)) *)
     var parsed6 = parser.parse("('proc + *)"); // ((quote proc) + *)
     var parsed7 = parser.parse("('(proc) + *)"); // ((quote (proc)) + *)
-    var parsed7 = parser.parse("(#t #f)"); // (true false)
+    var parsed8 = parser.parse("(#t #f)"); // (true false)
 };
