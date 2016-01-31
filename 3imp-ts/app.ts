@@ -66,7 +66,7 @@ class Parser {
         return this.parseFirst();
     }
 
-    public tokenize(input: string): Array<string> { //TODO: not use regex
+    public tokenize(input: string): Array<string> {
         return input
             .replace(/\(/g, " ( ")
             .replace(/\)/g, " ) ")
@@ -82,6 +82,8 @@ class Parser {
             return this.parseList();
         } else if (token == "'") {
             return this.parseQuote();
+        } else if (token == ".") {
+            return this.parseDot(true);
         } else {
             return this.parseAtom(token);
         }
@@ -99,6 +101,8 @@ class Parser {
             return null;
         } else if (token == "'") {
             return cons(this.parseQuote(), this.parseRest());
+        } else if (token == ".") {
+            return this.parseDot();
         } else {
             return cons(this.parseAtom(token), this.parseRest());
         }
@@ -106,7 +110,7 @@ class Parser {
 
     protected parseAtom(token): any {
         if (token == "#f") { return false; }
-        return parseFloat(token) || token == "#t" || Symbol.Intern(token);
+        return parseFloat(token) || token == "#t" || Symbol.Intern(token); // TODO: support string
     }
 
     protected parseQuote(): any {
@@ -115,6 +119,19 @@ class Parser {
             return list(Symbol.Intern("quote"), this.parseList());
         } else {
             return list(Symbol.Intern("quote"), this.parseAtom(token));
+        }
+    }
+
+    protected parseDot(calledByFirst = false): any {
+        var token = this.unparsed.shift();
+        if (calledByFirst || token == ")") {
+            throw new Error("READ-ERROR: bad dot syntax"); // TODO: error handling
+        } else {
+            var tail = token == "(" ? this.parseList() : this.parseAtom(token);
+            if (this.unparsed.shift() != ")") {
+                throw new Error("READ-ERROR: bad dot syntax");
+            }
+            return tail;
         }
     }
 }
@@ -154,4 +171,6 @@ window.onload = () => {
     var parsed6 = parser.parse("('proc + *)"); // ((quote proc) + *)
     var parsed7 = parser.parse("('(proc) + *)"); // ((quote (proc)) + *)
     var parsed8 = parser.parse("(#t #f)"); // (true false)
+    var parsed9 = parser.parse("'(1 . 2)"); // (quote (1 . 2))
+    var parsed10 = parser.parse("(append '(1 . (2 3)) '(4 5))"); // (append (quote (1 2 3)) (quote (4 5)))
 };
