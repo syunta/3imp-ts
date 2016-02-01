@@ -33,12 +33,14 @@
     <Content Include="Scripts\jasmine.js" />
     <Content Include="Scripts\linq.js" />
     <Content Include="Scripts\linq.min.js" />
+    <Content Include="test\test.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Scripts\linq.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jasmine\jasmine.d.ts" />
+    <TypeScriptCompile Include="test\test.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">
