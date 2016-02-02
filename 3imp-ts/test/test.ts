@@ -1,9 +1,15 @@
 ﻿/// <reference path = "../app" />
 
-describe('test', () => {
+describe('Cell class', () => {
+
+    describe('creates instance', () => {
+        var numberCell = new Cell(1, 2);
+
+        it('has car', () => { expect(numberCell.car).toBe(1); });
+        it('has cdr', () => { expect(numberCell.cdr).toBe(2); });
+    });
     /* TODO: all test
 
-    var el = window.document.getElementById('content');
     var cell = cons(1, cons(cons("hoge", 10), 3));
     el.innerHTML += car(cell);
     el.innerHTML += cadr(cell).car;
