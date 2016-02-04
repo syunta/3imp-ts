@@ -90,7 +90,12 @@ class Parser {
     }
 
     protected parseList(): any {
-        return cons(this.parseFirst(), this.parseRest());
+        if (this.isEmptyList()) {
+            this.unparsed.shift();
+            return null;
+        } else {
+            return cons(this.parseFirst(), this.parseRest());
+        }
     }
 
     protected parseRest(): any {
@@ -133,5 +138,9 @@ class Parser {
             }
             return tail;
         }
+    }
+
+    protected isEmptyList() {
+        return this.unparsed[0] == ')';
     }
 }

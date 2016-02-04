@@ -106,4 +106,13 @@ describe('The Parser', () => {
             expect(this.parser.parse("(proc '(1 . (2 3)) '(4 5))")).toEqual(l(proc, l(quote, l(1, 2, 3)), l(quote, l(4, 5))));
         });
     });
+
+    describe("supports 'nil' as", () => {
+        it("can parse '() to (quote null)", () => {
+            expect(this.parser.parse("'()")).toEqual(l(quote, null));
+        });
+        it("can parse (proc '() ()) to (proc (quote null) null)", () => {
+            expect(this.parser.parse("(proc '() ())")).toEqual(l(proc, l(quote, null), null));
+        });
+    });
 });
