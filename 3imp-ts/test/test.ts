@@ -61,12 +61,18 @@ describe('The Parser', () => {
         });
     });
 
-    it("can parse '1' to '1'", () => {
-        expect(this.parser.parse("1")).toBe(1);
-    });
+    describe("supports 'basic pattern' as", () => {
+        it("can parse '1' to '1'", () => {
+            expect(this.parser.parse("1")).toBe(1);
+        });
 
-    it("can parse (+ (+ 1 2) 3) to (+ (+ 1 2) 3)", () => {
-        expect(this.parser.parse("(+ (+ 1 2) 3)")).toEqual(l(p, l(p, 1, 2), 3));
+        it("can parse proc to proc", () => {
+            expect(this.parser.parse("proc")).toEqual(proc);
+        });
+
+        it("can parse (+ (+ 1 2) 3) to (+ (+ 1 2) 3)", () => {
+            expect(this.parser.parse("(+ (+ 1 2) 3)")).toEqual(l(p, l(p, 1, 2), 3));
+        });
     });
 
     describe("supports 'quote' as", () => {
@@ -111,6 +117,7 @@ describe('The Parser', () => {
         it("can parse '() to (quote null)", () => {
             expect(this.parser.parse("'()")).toEqual(l(quote, null));
         });
+
         it("can parse (proc '() ()) to (proc (quote null) null)", () => {
             expect(this.parser.parse("(proc '() ())")).toEqual(l(proc, l(quote, null), null));
         });
