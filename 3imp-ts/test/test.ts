@@ -78,6 +78,10 @@ describe('The Parser', () => {
         it("should throw EOF error when parses ((proc 1) (proc 2)", () => {
             expect(() => { this.parser.parse("((proc 1) (proc 2)") }).toThrowError(ReadErrorMessage.EOF);
         });
+
+        it("should throw extra colse parenthesis error when parses (+ 1 2))", () => {
+            expect(() => { this.parser.parse("(+ 1 2))") }).toThrowError(ReadErrorMessage.ExtraCloseParethesis);
+        });
     });
 
     describe("supports 'quote' as", () => {

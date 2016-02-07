@@ -63,7 +63,11 @@ class Parser {
 
     public parse(input: string): any {
         this.unparsed = this.tokenize(input);
-        return this.parseFirst();
+        var expressionTree = this.parseFirst();
+        if (this.unparsed.length != 0) {
+            throw new Error(ReadErrorMessage.ExtraCloseParethesis);
+        }
+        return expressionTree;
     }
 
     protected tokenize(input: string): Array<string> {
@@ -151,4 +155,5 @@ class Parser {
 class ReadErrorMessage { // FIXME:
     public static BadDotSyntax: string = "READ-ERROR: bad dot syntax";
     public static EOF: string = "READ-ERROR: EOF insede a list";
+    public static ExtraCloseParethesis: string = "READ-ERROR: extra colse parenthesis";
 }
