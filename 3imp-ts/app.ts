@@ -66,7 +66,7 @@ class Parser {
         return this.parseFirst();
     }
 
-    public tokenize(input: string): Array<string> {
+    protected tokenize(input: string): Array<string> {
         return input
             .replace(/\(/g, " ( ")
             .replace(/\)/g, " ) ")
