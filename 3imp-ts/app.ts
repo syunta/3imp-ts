@@ -130,11 +130,11 @@ class Parser {
     protected parseDot(calledByFirst = false): any {
         var token = this.unparsed.shift();
         if (calledByFirst || token == ")") {
-            throw new Error("READ-ERROR: bad dot syntax"); // TODO: error handling
+            throw new Error(ReadErrorMessage.BadDotSyntax);
         } else {
             var tail = token == "(" ? this.parseList() : this.parseAtom(token);
             if (this.unparsed.shift() != ")") {
-                throw new Error("READ-ERROR: bad dot syntax");
+                throw new Error(ReadErrorMessage.BadDotSyntax);
             }
             return tail;
         }
@@ -143,4 +143,8 @@ class Parser {
     protected isEmptyList() {
         return this.unparsed[0] == ')';
     }
+}
+
+class ReadErrorMessage { // FIXME:
+    public static BadDotSyntax: string = "READ-ERROR: bad dot syntax";
 }

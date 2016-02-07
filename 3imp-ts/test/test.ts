@@ -114,23 +114,23 @@ describe('The Parser', () => {
         });
 
         it("should throw error when parses (1 .)", () => {
-            expect(() => { this.parser.parse("(1 .)") }).toThrowError("READ-ERROR: bad dot syntax");
+            expect(() => { this.parser.parse("(1 .)") }).toThrowError(ReadErrorMessage.BadDotSyntax);
         });
 
         it("should throw error when parses (1 2 . (3 4) (5 6))", () => {
-            expect(() => { this.parser.parse("(1 2 . (3 4) (5 6))") }).toThrowError("READ-ERROR: bad dot syntax");
+            expect(() => { this.parser.parse("(1 2 . (3 4) (5 6))") }).toThrowError(ReadErrorMessage.BadDotSyntax);
         });
 
         it("should throw error when parses (1 2 . (3 4) 1)", () => {
-            expect(() => { this.parser.parse("(1 2 . (3 4) 1)") }).toThrowError("READ-ERROR: bad dot syntax");
+            expect(() => { this.parser.parse("(1 2 . (3 4) 1)") }).toThrowError(ReadErrorMessage.BadDotSyntax);
         });
 
         it("should throw error when parses (proc '(1 2 .) '(3 4))", () => {
-            expect(() => { this.parser.parse("(proc '(1 2 .) '(3 4))") }).toThrowError("READ-ERROR: bad dot syntax");
+            expect(() => { this.parser.parse("(proc '(1 2 .) '(3 4))") }).toThrowError(ReadErrorMessage.BadDotSyntax);
         });
 
         it("should throw error when parses '(. 2)", () => {
-            expect(() => { this.parser.parse("'(. 2)") }).toThrowError("READ-ERROR: bad dot syntax");
+            expect(() => { this.parser.parse("'(. 2)") }).toThrowError(ReadErrorMessage.BadDotSyntax);
         });
     });
 
