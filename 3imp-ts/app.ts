@@ -87,7 +87,7 @@ class Parser {
         } else if (token == "'") {
             return this.parseQuote();
         } else if (token == ".") {
-            return this.parseDot(true);
+            return this.parseDottedTail(true);
         } else {
             return this.parseAtom(token);
         }
@@ -111,7 +111,7 @@ class Parser {
         } else if (token == "'") {
             return cons(this.parseQuote(), this.parseRest());
         } else if (token == ".") {
-            return this.parseDot();
+            return this.parseDottedTail();
         } else {
             return cons(this.parseAtom(token), this.parseRest());
         }
@@ -124,14 +124,11 @@ class Parser {
 
     protected parseQuote(): any {
         var token = this.takeToken();
-        if (token == '(') {
-            return list(Symbol.Intern("quote"), this.parseList());
-        } else {
-            return list(Symbol.Intern("quote"), this.parseAtom(token));
-        }
+        var quote = Symbol.Intern("quote");
+        return token == '(' ? list(quote, this.parseList()) : list(quote, this.parseAtom(token));
     }
 
-    protected parseDot(calledByFirst = false): any {
+    protected parseDottedTail(calledByFirst: boolean = false): any {
         var token = this.takeToken();
         if (calledByFirst || token == ")") {
             throw new Error(ReadErrorMessage.BadDotSyntax);
@@ -144,7 +141,7 @@ class Parser {
         }
     }
 
-    protected takeToken() {
+    protected takeToken(): string {
         if (typeof this.unparsed[0] === 'undefined') {
             throw new Error(ReadErrorMessage.EOF);
         }
