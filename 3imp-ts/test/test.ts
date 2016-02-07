@@ -11,9 +11,10 @@ describe('Cell class', () => {
         it('has cdr', () => { expect(numberCell.cdr).toBe(2); });
 
         it('has value of any type', () => {
-            expect(stringCell.car).toBe("hoge");
+            expect(stringCell.car).toEqual(jasmine.any(String));
+            expect(numberCell.car).toEqual(jasmine.any(Number));
             expect(singletonList.cdr).toBe(null)
-            expect(list.cdr instanceof Cell).toBeTruthy();
+            expect(list.cdr).toEqual(jasmine.any(Cell));
         });
     });
 });
