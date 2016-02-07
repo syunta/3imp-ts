@@ -58,7 +58,7 @@ describe('The Parser', () => {
 
     describe('has tokenizer', () => {
         it("returns tokenized array", () => {
-            expect(this.parser.tokenize("  (cons 1 (cons 2 (cons 3 '())))")).toEqual(['(','cons','1','(','cons','2','(','cons','3',"'",'(', ')',')',')',')']);
+            expect(this.parser.tokenize("  (cons 1 (cons 2 (cons 3 '())))")).toEqual(['(', 'cons', '1', '(', 'cons', '2', '(', 'cons', '3', "'", '(', ')', ')', ')', ')']);
         });
     });
 
@@ -111,6 +111,26 @@ describe('The Parser', () => {
 
         it("can parse (proc '(1 . (2 3)) '(4 5)) to (proc (quote (1 2 3)) (quote (4 5)))", () => {
             expect(this.parser.parse("(proc '(1 . (2 3)) '(4 5))")).toEqual(l(proc, l(quote, l(1, 2, 3)), l(quote, l(4, 5))));
+        });
+
+        it("should throw error when parses (1 .)", () => {
+            expect(() => { this.parser.parse("(1 .)") }).toThrowError("READ-ERROR: bad dot syntax");
+        });
+
+        it("should throw error when parses (1 2 . (3 4) (5 6))", () => {
+            expect(() => { this.parser.parse("(1 2 . (3 4) (5 6))") }).toThrowError("READ-ERROR: bad dot syntax");
+        });
+
+        it("should throw error when parses (1 2 . (3 4) 1)", () => {
+            expect(() => { this.parser.parse("(1 2 . (3 4) 1)") }).toThrowError("READ-ERROR: bad dot syntax");
+        });
+
+        it("should throw error when parses (proc '(1 2 .) '(3 4))", () => {
+            expect(() => { this.parser.parse("(proc '(1 2 .) '(3 4))") }).toThrowError("READ-ERROR: bad dot syntax");
+        });
+
+        it("should throw error when parses '(. 2)", () => {
+            expect(() => { this.parser.parse("'(. 2)") }).toThrowError("READ-ERROR: bad dot syntax");
         });
     });
 
