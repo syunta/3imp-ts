@@ -151,6 +151,6 @@ class Parser {
 
 class ReadErrorMessage { // FIXME:
     public static BadDotSyntax: string = "READ-ERROR: bad dot syntax";
-    public static EOF: string = "READ-ERROR: EOF insede a list";
-    public static ExtraCloseParethesis: string = "READ-ERROR: extra colse parenthesis";
+    public static EOF: string = "READ-ERROR: EOF inside a list";
+    public static ExtraCloseParethesis: string = "READ-ERROR: extra close parenthesis";
 }
