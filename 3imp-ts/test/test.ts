@@ -74,6 +74,10 @@ describe('The Parser', () => {
         it("can parse (+ (+ 1 2) 3) to (+ (+ 1 2) 3)", () => {
             expect(this.parser.parse("(+ (+ 1 2) 3)")).toEqual(l(p, l(p, 1, 2), 3));
         });
+
+        it("should throw EOF error when parses ((proc 1) (proc 2)", () => {
+            expect(() => { this.parser.parse("((proc 1) (proc 2)") }).toThrowError(ReadErrorMessage.EOF);
+        });
     });
 
     describe("supports 'quote' as", () => {

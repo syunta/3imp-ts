@@ -77,7 +77,7 @@ class Parser {
     }
 
     protected parseFirst(): any {
-        var token = this.unparsed.shift();
+        var token = this.takeToken();
         if (token == '(') {
             return this.parseList();
         } else if (token == "'") {
@@ -90,8 +90,8 @@ class Parser {
     }
 
     protected parseList(): any {
-        if (this.isEmptyList()) {
-            this.unparsed.shift();
+        if (this.unparsed[0] == ')') {
+            this.takeToken();
             return null;
         } else {
             return cons(this.parseFirst(), this.parseRest());
@@ -99,7 +99,7 @@ class Parser {
     }
 
     protected parseRest(): any {
-        var token = this.unparsed.shift();
+        var token = this.takeToken();
         if (token == '(') {
             return cons(this.parseList(), this.parseRest());
         } else if (token == ')') {
@@ -119,7 +119,7 @@ class Parser {
     }
 
     protected parseQuote(): any {
-        var token = this.unparsed.shift();
+        var token = this.takeToken();
         if (token == '(') {
             return list(Symbol.Intern("quote"), this.parseList());
         } else {
@@ -128,23 +128,27 @@ class Parser {
     }
 
     protected parseDot(calledByFirst = false): any {
-        var token = this.unparsed.shift();
+        var token = this.takeToken();
         if (calledByFirst || token == ")") {
             throw new Error(ReadErrorMessage.BadDotSyntax);
         } else {
             var tail = token == "(" ? this.parseList() : this.parseAtom(token);
-            if (this.unparsed.shift() != ")") {
+            if (this.takeToken() != ")") {
                 throw new Error(ReadErrorMessage.BadDotSyntax);
             }
             return tail;
         }
     }
 
-    protected isEmptyList() {
-        return this.unparsed[0] == ')';
+    protected takeToken() {
+        if (typeof this.unparsed[0] === 'undefined') {
+            throw new Error(ReadErrorMessage.EOF);
+        }
+        return this.unparsed.shift();
     }
 }
 
 class ReadErrorMessage { // FIXME:
     public static BadDotSyntax: string = "READ-ERROR: bad dot syntax";
+    public static EOF: string = "READ-ERROR: EOF insede a list";
 }
