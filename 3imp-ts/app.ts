@@ -63,11 +63,7 @@ class Parser {
 
     public parse(input: string): any {
         this.unparsed = this.tokenize(input);
-        var expressionTree = this.parseFirst();
-        if (this.unparsed.length != 0) {
-            throw new Error(ReadErrorMessage.ExtraCloseParethesis);
-        }
-        return expressionTree;
+        return this.parseFirst();
     }
 
     protected tokenize(input: string): Array<string> {
